@@ -14,6 +14,13 @@ import { join } from "node:path";
 
 const LINE = "First paycheck: I slept for once.";
 
+// The bounty demands exactly six words: fail loudly rather than write a
+// malformed line (a wrong word count would score nothing, like v1's
+// duplicate did). The 60-char cap keeps the line duel-legible.
+const WORDS = LINE.trim().split(/\s+/);
+if (WORDS.length !== 6) throw new Error(`expected 6 words, got ${WORDS.length}`);
+if (LINE.length > 60) throw new Error(`line too long: ${LINE.length} chars`);
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "out";
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, "entry.txt"), LINE, "utf8");
